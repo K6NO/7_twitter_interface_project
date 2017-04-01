@@ -5,6 +5,7 @@ const getRecentTweets = require('./getrecenttweets.js');
 const getFriends = require('./getfriends.js');
 const getFriendsCount = require('./getfriendscount.js');
 const getDirectMessages = require('./getdirectmessages.js');
+const getUser = require('./getuser.js');
 
 const moment = require('moment');
 
@@ -28,6 +29,8 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
     //modules//
 
 //calibrate the closure below - watch video
+
+app.use(getUser({url: 'account/settings'}));
 
 app.use(getRecentTweets({url : 'statuses/home_timeline', count: 5}));
 
