@@ -9,7 +9,7 @@ block content
             |
             .grid-33
                 .app--section--heading
-                    strong 129
+                    strong #{friendsCount}
                     |
                     h2 Following
             |
@@ -22,14 +22,14 @@ block content
                 ul.app--tweet--list
                     for tweet in tweets
                         li
-                            strong.app--tweet--timestamp #{time_passed}h
+                            strong.app--tweet--timestamp #{tweet.time_passed}h
                             |
                             a.app--tweet--author
-                                .app--avatar(style='background-image: url(#{tweet.user_profile_image_url})')
-                                    img(src="#{tweet.user_profile_image_url}")
+                                .app--avatar(style=`background-image: url("${tweet.user_profile_image_url}")`)
+                                    img(src=tweet.user_profile_image_url)
                                 |
                                 h4 #{tweet.user_name}
-                                |  @ #{user_screen_name}
+                                |  @ #{tweet.user_screen_name}
                             |
                             p #{tweet.text}
                             |
@@ -71,122 +71,37 @@ block content
         .grid-33
             .app--section
                 ul.app--user--list
-                    li
-                        .circle--fluid
-                            .circle--fluid--cell.circle--fluid--primary
-                                a.app--tweet--author
-                                    .app--avatar(style='background-image: url(images/f-spore.png)')
-                                        img(src='images/f-spore.png')
-                                    |
-                                    h4 Jill Spore
-                                    |
-                                    p @jillspore
-                            |
-                            .circle--fluid--cell
-                                a.button.button-text Unfollow
-                    |
-                    li
-                        .circle--fluid
-                            .circle--fluid--cell.circle--fluid--primary
-                                a.app--tweet--author
-                                    .app--avatar(style='background-image: url(images/f-spore.png)')
-                                        img(src='images/f-spore.png')
-                                    |
-                                    h4 Jill Spore
-                                    |
-                                    p @jillspore
-                            |
-                            .circle--fluid--cell
-                                a.button.button-text Unfollow
-                    |
-                    li
-                        .circle--fluid
-                            .circle--fluid--cell.circle--fluid--primary
-                                a.app--tweet--author
-                                    .app--avatar(style='background-image: url(images/f-spore.png)')
-                                        img(src='images/f-spore.png')
-                                    |
-                                    h4 Jill Spore
-                                    |
-                                    p @jillspore
-                            |
-                            .circle--fluid--cell
-                                a.button.button-text Unfollow
-                    |
-                    li
-                        .circle--fluid
-                            .circle--fluid--cell.circle--fluid--primary
-                                a.app--tweet--author
-                                    .app--avatar(style='background-image: url(images/f-spore.png)')
-                                        img(src='images/f-spore.png')
-                                    |
-                                    h4 Jill Spore
-                                    |
-                                    p @jillspore
-                            |
-                            .circle--fluid--cell
-                                a.button Follow
-                    |
-                    li
-                        .circle--fluid
-                            .circle--fluid--cell.circle--fluid--primary
-                                a.app--tweet--author
-                                    .app--avatar(style='background-image: url(images/f-spore.png)')
-                                        img(src='images/f-spore.png')
-                                    |
-                                    h4 Jill Spore
-                                    |
-                                    p @jillspore
-                            |
-                            .circle--fluid--cell
-                                a.button.button-text Unfollow
-        |
+                    for user in users
+                        li
+                            .circle--fluid
+                                .circle--fluid--cell.circle--fluid--primary
+                                    a.app--tweet--author
+                                        .app--avatar(style=`background-image: url("${user.profile_image_url}")`)
+                                            img(src=user.profile_image_url)
+                                        |
+                                        h4 #{user.name}
+                                        |
+                                        p @#{user.screen_name}
+                                |
+                                .circle--fluid--cell
+                                    a.button.button-text(id=user.id) Unfollow
+
+            |
         .grid-33
             .app--section
                 ul.app--message--list
                     li
                         h3
                             | Conversation with
-                            a Jill Spore
+                            a #{messages[0].sender_name}
                         |
                         ul.app--message--conversation
-                            li.app--message
-                                .app--avatar(style='background-image: url(images/f-spore.png)')
-                                    img(src='images/f-spore.png')
+                            for message in messages
+                                li.app--message
+                                    .app--avatar(style=`background-image: url("${message.sender_image}")`)
+                                        img(src=message.sender_image)
+                                    |
+                                    p.app--message--text #{message.text}
+                                    |
+                                    p.app--message--timestamp #{message.hours} hours ago
                                 |
-                                p.app--message--text How are things?
-                                |
-                                p.app--message--timestamp 3 hours ago
-                            |
-                            li.app--message--me
-                                .app--avatar(style='background-image: url(images/m-spore.png)')
-                                    img(src='images/m-spore.png')
-                                |
-                                p.app--message--text
-                                    | Great! How about you? Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                |
-                                p.app--message--timestamp 2 hours ago
-                            |
-                            li.app--message
-                                .app--avatar(style='background-image: url(images/f-spore.png)')
-                                    img(src='images/f-spore.png')
-                                |
-                                p.app--message--text Fantastic! You wanna grab lunch?
-                                |
-                                p.app--message--timestamp 2 hours ago
-                            |
-                            li.app--message--me
-                                .app--avatar(style='background-image: url(images/m-spore.png)')
-                                    img(src='images/m-spore.png')
-                                |
-                                p.app--message--text Totes mcgotes. How about Mackey&apos;s?
-                                |
-                                p.app--message--timestamp 1 hour ago
-                            |
-                            li.app--message
-                                .app--avatar(style='background-image: url(images/f-spore.png)')
-                                    img(src='images/f-spore.png')
-                                |
-                                p.app--message--text Aww yeah.. I&apos;m craving a Triple Quarter Mack!
-                                |
-                                p.app--message--timestamp 1 hour ago

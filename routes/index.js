@@ -3,10 +3,11 @@ const router = express.Router();
 
 
 router.get('/', (req, res, next) => {
-    console.log('In the router: ')
-    //console.log(req.tweet);
     res.render('index', {
-        tweets : req.tweets
+        tweets : req.tweets,
+        users : req.users,
+        friendsCount : req.friendsCount,
+        messages : req.messages
     });
 });
 
