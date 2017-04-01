@@ -13,19 +13,12 @@ module.exports = (requestConfig) => {
 
     return (req, res, next) => {
         T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
-            let users = [];
-            for (let item in data.users) {
-
-                let user = {
-                    id : data.users[item].id,
-                    name: data.users[item].name,
-                    screen_name : data.users[item].screen_name,
-                    profile_image_url : data.users[item].profile_image_url
-                };
-                users.push(user);
+            if(!err){
+                req.users = data.users;
+                next();
+            } else {
+                res.send(err);
             }
-            req.users = users;
-            next();
         });
     }
 };
