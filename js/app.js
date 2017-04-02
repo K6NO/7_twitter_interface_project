@@ -1,10 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser'); // maybe not needed
-const getRecentTweets = require('./getrecenttweets.js');
-const getFriends = require('./getfriends.js');
-const getFriendsCount = require('./getfriendscount.js');
-const getDirectMessages = require('./getdirectmessages.js');
+const twitterService = require ('./twitterservice.js');
+
 
 const moment = require('moment');
 
@@ -29,13 +27,17 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 //calibrate the closure below - watch video
 
-app.use(getRecentTweets({url : 'statuses/home_timeline', count: 5}));
+app.use(twitterService.getUser({url: 'account/settings'}));
 
-app.use(getFriends({url : 'friends/list', count: 5}));
+app.use(twitterService.getCredentials({url : 'account/verify_credentials'}));
 
-app.use(getFriendsCount({url : 'friends/ids', count: 5000}));
+app.use(twitterService.getRecentTweets({url : 'statuses/home_timeline', count: 5}));
 
-app.use(getDirectMessages({url: 'direct_messages', count : 5}));
+app.use(twitterService.getFriends({url : 'friends/list', count: 5}));
+
+app.use(twitterService.getFriendsCount({url : 'friends/ids', count: 5000}));
+
+app.use(twitterService.getDirectMessages({url: 'direct_messages', count : 5}));
 
 //app.use((req, res, next) => {
 //    if (req.body.tweettextarea === undefined) {

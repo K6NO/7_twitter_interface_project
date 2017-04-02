@@ -6,7 +6,10 @@ router.get('/', (req, res, next) => {
         tweets : req.tweets,
         users : req.users,
         friendsCount : req.friendsCount,
-        messages : req.messages
+        messages : req.messages,
+        screen_name : req.screen_name,
+        profile_banner : req.profile_banner,
+        profile_image : req.profile_image_url
     });
 });
 
