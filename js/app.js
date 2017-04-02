@@ -41,10 +41,7 @@ app.use(twitterService.getFriends({url : 'friends/list', count: 5}));
 app.use(twitterService.getFriendsCount({url : 'friends/ids', count: 5000}));
 app.use(twitterService.getDirectMessages({url: 'direct_messages', count : 5}));
 
-//app.use(twitterService.postTweet({status : req.body.tweettextarea}))
-
 app.use((req, res, next) => {
-        console.log('In post app.use')
         if (req.body.tweettextarea === undefined) {
             return next();
         }
