@@ -1,6 +1,5 @@
 const Twit = require('twit');
 const config = require('./config.js');
-const moment = require('moment');
 
 const T = new Twit({
     consumer_key : config.consumerKey,
@@ -12,13 +11,12 @@ const T = new Twit({
 module.exports = (requestConfig) => {
 
     return (req, res, next) => {
-
-        T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
+        T.get(requestConfig.url, function (err, data, res) {
             if(!err){
-                req.messages = data;
+                req.profile_banner = data.sizes;
                 next();
             } else {
-                res.send(err);
+               console.log(err);
             }
         });
     }

@@ -1,6 +1,5 @@
 const Twit = require('twit');
 const config = require('./config.js');
-const moment = require('moment');
 
 const T = new Twit({
     consumer_key : config.consumerKey,

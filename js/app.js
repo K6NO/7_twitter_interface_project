@@ -6,6 +6,8 @@ const getFriends = require('./getfriends.js');
 const getFriendsCount = require('./getfriendscount.js');
 const getDirectMessages = require('./getdirectmessages.js');
 const getUser = require('./getuser.js');
+const getCredentials = require('./getcredentials.js');
+
 
 const moment = require('moment');
 
@@ -31,6 +33,12 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 //calibrate the closure below - watch video
 
 app.use(getUser({url: 'account/settings'}));
+
+
+//wait, maybe twitter generates links to profile_background image
+//app.use(getBanner({url : 'users/profile_banner'}));
+
+app.use(getCredentials({url : 'account/verify_credentials'}));
 
 app.use(getRecentTweets({url : 'statuses/home_timeline', count: 5}));
 

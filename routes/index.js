@@ -7,7 +7,9 @@ router.get('/', (req, res, next) => {
         users : req.users,
         friendsCount : req.friendsCount,
         messages : req.messages,
-        screen_name : req.screen_name
+        screen_name : req.screen_name,
+        profile_banner : req.profile_banner,
+        profile_image : req.profile_image_url
     });
 });
 
