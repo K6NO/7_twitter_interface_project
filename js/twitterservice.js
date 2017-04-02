@@ -8,6 +8,8 @@ const T = new Twit({
     access_token_secret : config.accessTokenSecret
 });
 
+
+
 module.exports.getUser = (requestConfig) => {
 
     return (req, res, next) => {
@@ -38,8 +40,9 @@ module.exports.getCredentials = (requestConfig) => {
 };
 
 module.exports.getRecentTweets = (requestConfig) => {
-
+    console.log('In recent tweet getter');
     return (req, res, next) => {
+        console.log(req.streamedTweet);
         T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
             if(!err){
                 req.tweets = data;
@@ -91,8 +94,8 @@ module.exports.getDirectMessages = (requestConfig) => {
     }
 };
 
-module.exports.postTweet = (requestConfig) => {
-    return (req, res, next) => {
+module.exports.postTweet = () => {
+    return (req, res, next, err) => {
         if (req.body.tweettextarea === undefined) {
             return next();
         }

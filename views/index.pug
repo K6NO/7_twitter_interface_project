@@ -25,8 +25,8 @@ block content
                             strong.app--tweet--timestamp #{tweet.created_at.slice(0,10)}
                             |
                             a.app--tweet--author
-                                .app--avatar(style='background-image: url(' + tweet.user.profile_image_url + ')')
-                                    img(src=tweet.user.profile_image_url)
+                                .app--avatar(style='background-image: url(' + tweet.user.profile_image_url_https + ')')
+                                    img(src=tweet.user.profile_image_url_https)
                                 |
                                 h4 #{tweet.user.name}
                                 |  @ #{tweet.user.screen_name}
@@ -76,8 +76,8 @@ block content
                             .circle--fluid
                                 .circle--fluid--cell.circle--fluid--primary
                                     a.app--tweet--author
-                                        .app--avatar(style=`background-image: url("${user.profile_image_url}")`)
-                                            img(src=user.profile_image_url)
+                                        .app--avatar(style=`background-image: url("${user.profile_image_url_https}")`)
+                                            img(src=user.profile_image_url_https)
                                         |
                                         h4 #{user.name}
                                         |
@@ -99,7 +99,7 @@ block content
                             for message in messages
                                 li.app--message
                                     .app--avatar(style='background-image: url(' + message.sender.profile_image_url_https + ')')
-                                        img(src=message.profile_image_url)
+                                        img(src=message.profile_image_url_https)
                                     |
                                     p.app--message--text #{message.text}
                                     |

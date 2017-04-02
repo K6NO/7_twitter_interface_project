@@ -2,9 +2,8 @@
 
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser'); // maybe not needed
+const bodyParser = require('body-parser');
 const twitterService = require ('./twitterservice.js');
-
 const routes = require('../routes/index.js');
 const config = require('./config.js');
 
@@ -30,10 +29,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-    //modules//
 
-//calibrate the closure below - watch video
+//app.use((req, res, next) => {
+//    var stream = T.stream('user');
+//    stream.on('connected', function (request) {
+//        console.log('stream connected');
+//        next();
+//    });
+//    stream.on('tweet', function (tweet) {
+//        console.log('tweet arrived');
+//        console.log(tweet);
+//        res.body.streamedTweet = tweet;
+//        next();
+//    })
+//});
 
+        //modules//
+    // middlewares retrieving user account settings, the timeline status, followed users, received direct messages
 app.use(twitterService.getUser({url: 'account/settings'}));
 app.use(twitterService.getCredentials({url : 'account/verify_credentials'}));
 app.use(twitterService.getRecentTweets({url : 'statuses/home_timeline', count: 5}));
@@ -41,14 +53,13 @@ app.use(twitterService.getFriends({url : 'friends/list', count: 5}));
 app.use(twitterService.getFriendsCount({url : 'friends/ids', count: 5000}));
 app.use(twitterService.getDirectMessages({url: 'direct_messages', count : 5}));
 
+    // middleware to post tweets
 app.use((req, res, next) => {
         if (req.body.tweettextarea === undefined) {
             return next();
         }
-
         T.post('statuses/update', {status: req.body.tweettextarea}, (err, data, response) => {
             if (data) req.body.tweeted = 'Tweet posted, check your account!';
-            console.log(req.body.tweeted);
         });
         next()
     }
@@ -61,7 +72,6 @@ app.use((req, res, next) => {
 //////////////////////
 
 // Router //
-// for root context
 app.use('/', routes);
 
 // Error handlers //
@@ -85,6 +95,7 @@ if (app.get('env') === 'development') {
     });
 }
 
+// production error handler
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error', {
