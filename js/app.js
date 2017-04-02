@@ -1,12 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser'); // maybe not needed
-const getRecentTweets = require('./getrecenttweets.js');
-const getFriends = require('./getfriends.js');
-const getFriendsCount = require('./getfriendscount.js');
-const getDirectMessages = require('./getdirectmessages.js');
-const getUser = require('./getuser.js');
-const getCredentials = require('./getcredentials.js');
+const twitterService = require ('./twitterservice.js');
 
 
 const moment = require('moment');
@@ -32,21 +27,17 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 //calibrate the closure below - watch video
 
-app.use(getUser({url: 'account/settings'}));
+app.use(twitterService.getUser({url: 'account/settings'}));
 
+app.use(twitterService.getCredentials({url : 'account/verify_credentials'}));
 
-//wait, maybe twitter generates links to profile_background image
-//app.use(getBanner({url : 'users/profile_banner'}));
+app.use(twitterService.getRecentTweets({url : 'statuses/home_timeline', count: 5}));
 
-app.use(getCredentials({url : 'account/verify_credentials'}));
+app.use(twitterService.getFriends({url : 'friends/list', count: 5}));
 
-app.use(getRecentTweets({url : 'statuses/home_timeline', count: 5}));
+app.use(twitterService.getFriendsCount({url : 'friends/ids', count: 5000}));
 
-app.use(getFriends({url : 'friends/list', count: 5}));
-
-app.use(getFriendsCount({url : 'friends/ids', count: 5000}));
-
-app.use(getDirectMessages({url: 'direct_messages', count : 5}));
+app.use(twitterService.getDirectMessages({url: 'direct_messages', count : 5}));
 
 //app.use((req, res, next) => {
 //    if (req.body.tweettextarea === undefined) {
