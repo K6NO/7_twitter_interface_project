@@ -16,7 +16,7 @@ module.exports.getUser = (requestConfig) => {
                 req.screen_name = data.screen_name;
                 next();
             } else {
-                res.send(err.message);
+                console.error(err.message);
             }
         });
     }
@@ -31,7 +31,7 @@ module.exports.getCredentials = (requestConfig) => {
                 req.profile_banner = data.profile_background_image_url;
                 next();
             } else {
-                res.send(err.message);
+                console.error(err.message);
             }
         });
     }
@@ -45,7 +45,7 @@ module.exports.getRecentTweets = (requestConfig) => {
                 req.tweets = data;
                 next();
             } else {
-                res.send(err.message);
+                console.error(err.message);
             }
         });
     }
@@ -59,7 +59,7 @@ module.exports.getFriends = (requestConfig) => {
                 req.users = data.users;
                 next();
             } else {
-                res.send(err);
+                console.error(err);
             }
         });
     }
@@ -85,8 +85,26 @@ module.exports.getDirectMessages = (requestConfig) => {
                 req.messages = data;
                 next();
             } else {
-                res.send(err);
+                console.error(err);
             }
         });
     }
+};
+
+module.exports.postTweet = (requestConfig) => {
+    return (req, res, next) => {
+        if (req.body.tweettextarea === undefined) {
+            return next();
+        }
+        if(!err) {
+            const tweet = req.body.tweettextarea;
+
+            T.post('statuses/update', {status: tweet}, function (err, data, response) {
+                console.log(data);
+            });
+            next()
+        } else {
+            console.error(err);
+        }
+    };
 };

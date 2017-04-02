@@ -6,7 +6,7 @@ module.exports = (config) => {
         if (req.body.tweet-textarea === undefined) {
             return next();
         }
-        const tweet = (req.body.tweet-textarea);
+        const tweet = (req.body.tweettextarea);
 
         T.post('statuses/update', { status: 'hello world!' }, function(err, data, response) {
             console.log(data)

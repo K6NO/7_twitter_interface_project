@@ -1,5 +1,6 @@
 .app--tweet
-    form
+    p #{tweeted}
+    form(action='/', method='POST')
         .circle--fluid
             .circle--fluid--cell.circle--fluid--primary.align-bottom.app--tweet--post
                 .app--avatar(style='background-image: url(images/m-spore.png)')
@@ -10,4 +11,4 @@
                 strong#tweet-char.app--tweet--char 140
 
             .circle--fluid--cell.align-bottom
-                button.button-primary Tweet
+                button.button-submit Tweet

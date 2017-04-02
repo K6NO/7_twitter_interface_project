@@ -1,20 +1,27 @@
+'use strict';
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser'); // maybe not needed
 const twitterService = require ('./twitterservice.js');
-
-
-const moment = require('moment');
 
 const routes = require('../routes/index.js');
 const config = require('./config.js');
 
 const app = express();
 
+const Twit = require('twit');
+
+const T = new Twit({
+    consumer_key : config.consumerKey,
+    consumer_secret : config.consumerSecret,
+    access_token : config.accessToken,
+    access_token_secret : config.accessTokenSecret
+});
+
 // Views and static fileserver
 app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'pug');
-//app.set('view options', { layout: false });
 
 //load json parser middleware
 // reads the form's value and places it in the req object of the post request --> returns a 'body' property, form elements can be accessed
@@ -28,30 +35,27 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 //calibrate the closure below - watch video
 
 app.use(twitterService.getUser({url: 'account/settings'}));
-
 app.use(twitterService.getCredentials({url : 'account/verify_credentials'}));
-
 app.use(twitterService.getRecentTweets({url : 'statuses/home_timeline', count: 5}));
-
 app.use(twitterService.getFriends({url : 'friends/list', count: 5}));
-
 app.use(twitterService.getFriendsCount({url : 'friends/ids', count: 5000}));
-
 app.use(twitterService.getDirectMessages({url: 'direct_messages', count : 5}));
 
-//app.use((req, res, next) => {
-//    if (req.body.tweettextarea === undefined) {
-//        return next();
-//    }
-//    const tweet = req.body.tweettextarea;
-//
-//    //T.post('statuses/update', { status: tweet }, function(err, data, response) {
-//    //    console.log(data)
-//    //});
-//    //storing the result on the request object in a parameter
-//    req.tweetToPost = tweet;
-//    next()
-//});
+//app.use(twitterService.postTweet({status : req.body.tweettextarea}))
+
+app.use((req, res, next) => {
+        console.log('In post app.use')
+        if (req.body.tweettextarea === undefined) {
+            return next();
+        }
+
+        T.post('statuses/update', {status: req.body.tweettextarea}, (err, data, response) => {
+            if (data) req.body.tweeted = 'Tweet posted, check your account!';
+            console.log(req.body.tweeted);
+        });
+        next()
+    }
+);
 
 // to implement unfollow create a POST
 // https://dev.twitter.com/rest/reference/post/friendships/destroy
