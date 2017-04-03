@@ -12,6 +12,9 @@ router.get('/', (req, res, next) => {
         profile_banner : req.profile_banner,
         profile_image : req.profile_image_url,
     });
+    console.log('in router');
+    console.log(profile_banner);
+
 });
 
 router.post('/', (req, res, next) => {

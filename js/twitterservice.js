@@ -8,10 +8,9 @@ const T = new Twit({
     access_token_secret : config.accessTokenSecret
 });
 
-
+    // using Twit in closures to request /send data from /to Twitter API
 
 module.exports.getUser = (requestConfig) => {
-
     return (req, res, next) => {
         T.get(requestConfig.url, function (err, data, res) {
             if(!err){
@@ -25,12 +24,11 @@ module.exports.getUser = (requestConfig) => {
 };
 
 module.exports.getCredentials = (requestConfig) => {
-
     return (req, res, next) => {
         T.get(requestConfig.url, function (err, data, res) {
             if(!err){
                 req.profile_image_url = data.profile_image_url;
-                req.profile_banner = data.profile_background_image_url;
+                req.profile_banner = data.profile_banner_url;
                 next();
             } else {
                 console.error(err.message);
@@ -40,7 +38,6 @@ module.exports.getCredentials = (requestConfig) => {
 };
 
 module.exports.getRecentTweets = (requestConfig) => {
-    console.log('In recent tweet getter');
     return (req, res, next) => {
         T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
             if(!err){
@@ -54,7 +51,6 @@ module.exports.getRecentTweets = (requestConfig) => {
 };
 
 module.exports.getFriends = (requestConfig) => {
-
     return (req, res, next) => {
         T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
             if(!err){
@@ -68,7 +64,6 @@ module.exports.getFriends = (requestConfig) => {
 };
 
 module.exports.getFriendsCount = (requestConfig) => {
-
     return (req, res, next) => {
         T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
             let friendsCount = data.ids.length;
@@ -79,9 +74,7 @@ module.exports.getFriendsCount = (requestConfig) => {
 };
 
 module.exports.getDirectMessages = (requestConfig) => {
-
     return (req, res, next) => {
-
         T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
             if(!err){
                 req.messages = data;
@@ -93,20 +86,16 @@ module.exports.getDirectMessages = (requestConfig) => {
     }
 };
 
-//module.exports.postTweet = () => {
-//    return (req, res, next, err) => {
-//        if (req.body.tweettextarea === undefined) {
-//            return next();
-//        }
-//        if(!err) {
-//            const tweet = req.body.tweettextarea;
-//
-//            T.post('statuses/update', {status: tweet}, function (err, data, response) {
-//                console.log(data);
-//            });
-//            next()
-//        } else {
-//            console.error(err);
-//        }
-//    };
-//};
+module.exports.postTweet = (requestConfig) => {
+    return (req, res, next) => {
+        if (req.body.tweet === undefined) {
+            return next();
+        }
+        T.post(requestConfig.url, {status: req.body.tweet}, (err, data, response) => {
+            if (data) {
+                console.log('Tweet posted, check your account!');
+                res.json({status : 200, message : 'OK'})
+            }
+        });
+    }
+};

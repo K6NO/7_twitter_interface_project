@@ -71,7 +71,7 @@ block content
         .grid-33
             .app--section
                 ul.app--user--list
-                    for user in users
+                    each user in users
                         li
                             .circle--fluid
                                 .circle--fluid--cell.circle--fluid--primary
@@ -96,7 +96,7 @@ block content
                             a #{messages[0].sender.name}
                         |
                         ul.app--message--conversation
-                            for message in messages
+                            each message in messages
                                 li.app--message
                                     .app--avatar(style='background-image: url(' + message.sender.profile_image_url_https + ')')
                                         img(src=message.profile_image_url_https)
