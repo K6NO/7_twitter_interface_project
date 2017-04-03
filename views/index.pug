@@ -29,7 +29,7 @@ block content
                                     img(src=tweet.user.profile_image_url_https)
                                 |
                                 h4 #{tweet.user.name}
-                                |  @ #{tweet.user.screen_name}
+                                span.app--screen--name @ #{tweet.user.screen_name}
                             |
                             p #{tweet.text}
                             |

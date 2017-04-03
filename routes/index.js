@@ -24,7 +24,7 @@ router.post('/', (req, res, next) => {
         screen_name : req.screen_name,
         profile_banner : req.profile_banner,
         profile_image : req.profile_image_url,
-        tweeted : req.body.tweeted
+        tweet : req.body.tweet
     });
 });
 

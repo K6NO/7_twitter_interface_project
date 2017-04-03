@@ -42,7 +42,6 @@ module.exports.getCredentials = (requestConfig) => {
 module.exports.getRecentTweets = (requestConfig) => {
     console.log('In recent tweet getter');
     return (req, res, next) => {
-        console.log(req.streamedTweet);
         T.get(requestConfig.url, {count : requestConfig.count}, function (err, data, res) {
             if(!err){
                 req.tweets = data;
@@ -94,20 +93,20 @@ module.exports.getDirectMessages = (requestConfig) => {
     }
 };
 
-module.exports.postTweet = () => {
-    return (req, res, next, err) => {
-        if (req.body.tweettextarea === undefined) {
-            return next();
-        }
-        if(!err) {
-            const tweet = req.body.tweettextarea;
-
-            T.post('statuses/update', {status: tweet}, function (err, data, response) {
-                console.log(data);
-            });
-            next()
-        } else {
-            console.error(err);
-        }
-    };
-};
+//module.exports.postTweet = () => {
+//    return (req, res, next, err) => {
+//        if (req.body.tweettextarea === undefined) {
+//            return next();
+//        }
+//        if(!err) {
+//            const tweet = req.body.tweettextarea;
+//
+//            T.post('statuses/update', {status: tweet}, function (err, data, response) {
+//                console.log(data);
+//            });
+//            next()
+//        } else {
+//            console.error(err);
+//        }
+//    };
+//};
