@@ -14,7 +14,6 @@ router.get('/', (req, res, next) => {
     });
     console.log('in router');
     console.log(profile_banner);
-
 });
 
 router.post('/', (req, res, next) => {
